@@ -1,3 +1,9 @@
+# Gestor de Incidencias con React
+
+Este proyecto se basa en un gestor de incidencias el cual nos permitirá agregar incidencias, modificarlas, eliminarlas ... Dependiendo del rol que tenga el usuario (admin o usuario).
+Tanto la información de las incidencias como la de los usuarios será gestionado por una base de datos (o en archivo JSON).
+El objetivo final de este proyecto es que todos los usuarios puedan añadir incidencias y que los admin puedan gestionar tanto las incidencias como los usuarios.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

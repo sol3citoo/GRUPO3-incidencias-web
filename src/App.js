@@ -1,14 +1,18 @@
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import LOGIN from './LOGIN';
+import INICIO from './INICIO';
+import ADMIN from './ADMIN'; 
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          APLICACIÓN DE INCIDENCIAS - GRUPO 3
-        </p>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LOGIN />} />
+        <Route path="/inicio" element={<INICIO />} />
+        <Route path="/admin" element={<ADMIN />} />
+      </Routes>
+    </Router>
   );
 }
 

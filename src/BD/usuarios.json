@@ -1,0 +1,14 @@
+{
+    "usuarios": [
+      {
+        "correo": "admin@grupo3.com",
+        "password": "admin",
+        "rol": "admin"
+      },
+      {
+        "correo": "user@grupo3.com",
+        "password": "123",
+        "rol": "user"
+      }
+    ]
+}

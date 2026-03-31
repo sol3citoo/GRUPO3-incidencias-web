@@ -20,7 +20,6 @@ export default function Incidencias() {
     <div className="vh-100 d-flex flex-column bg-white">
       <header className="bg-dark text-white p-3 shadow-sm">
         <div className="container-fluid d-flex justify-content-between align-items-center">
-          <span>ooo</span>
           <strong className="fs-4">Página de Incidencias</strong>
         </div>
       </header>

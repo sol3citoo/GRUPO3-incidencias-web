@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import data from './BD/usuarios.json';
+import Header from './componentes/Header';
+import Footer from './componentes/Footer';
 
 export default function Login() {
   const [form, setForm] = useState({ correo: '', password: '' });
@@ -29,10 +31,7 @@ export default function Login() {
 
   return (
     <div className="vh-100 d-flex flex-column bg-light">
-      
-      <header className="bg-dark text-white p-3 shadow">
-        <div className="container"><strong>Página de Incidencias</strong></div>
-      </header>
+      <Header></Header>
 
       <main className="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
         <h1 className="display-4 mb-5 fw-bold">Iniciar sesión</h1>
@@ -46,9 +45,7 @@ export default function Login() {
         </form>
       </main>
 
-      <footer className="bg-dark text-white p-3 mt-auto">
-        GRUPO 3
-      </footer>
+      <Footer />
     </div>
   );
 }

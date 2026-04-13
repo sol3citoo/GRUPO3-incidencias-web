@@ -1,14 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Header from './componentes/Header';
+import Footer from './componentes/Footer';
 
 export default function Incio() {
   const navigate = useNavigate();
 
   return (
     <div className="vh-100 d-flex flex-column bg-light">
-      <header className="bg-dark text-white p-3 shadow">
-        <div className="container"><strong>Página Usuario Común</strong></div>
-      </header>
+      <Header />
 
       <main className="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
         <h2 className="display-5 mb-5">Bienvenido a la página de incidencias</h2>
@@ -24,9 +24,7 @@ export default function Incio() {
         </div>
       </main>
 
-      <footer className="bg-dark text-white p-3 mt-auto">
-        GRUPO 3
-      </footer>
+      <Footer />
     </div>
   );
 }

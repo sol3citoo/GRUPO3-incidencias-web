@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import datos from './BD/incidencias.json';
+import Footer from './componentes/Footer';
+import Header from './componentes/Header';
 
 export default function Incidencias() {
   const navigate = useNavigate();
@@ -18,12 +20,7 @@ export default function Incidencias() {
 
   return (
     <div className="vh-100 d-flex flex-column bg-white">
-      <header className="bg-dark text-white p-3 shadow-sm">
-        <div className="container-fluid d-flex justify-content-between align-items-center">
-          <strong className="fs-4">Página de Incidencias</strong>
-        </div>
-      </header>
-
+      <Header />
       <main className="flex-grow-1 container mt-4">
         <div className="d-flex justify-content-center gap-3 mb-5">
           <button className="btn btn-secondary btn-lg rounded-pill px-4 shadow-sm" onClick={volverAlInicio}>
@@ -61,9 +58,7 @@ export default function Incidencias() {
         </div>
       </main>
 
-      <footer className="bg-dark text-white p-3 mt-auto">
-        GRUPO 3
-      </footer>
+      <Footer />
     </div>
   );
 }

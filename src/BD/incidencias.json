@@ -1,31 +1,184 @@
 {
-    "incidencias": [
-      {
-        "id": 1,
-        "titulo": "Fallo de red en oficina",
-        "usuario": "Juan Pérez",
-        "urgencia": "Alta",
-        "ubicacion": "Planta 2 - Sala A",
-        "estado": "Abierta",
-        "fecha": "2023-10-26"
-      },
-      {
-        "id": 2,
-        "titulo": "Actualización de software",
-        "usuario": "Ana García",
-        "urgencia": "Media",
-        "ubicacion": "Remoto",
-        "estado": "En progreso",
-        "fecha": "2023-10-25"
-      },
-      {
-        "id": 3,
-        "titulo": "Problema con impresora",
-        "usuario": "Pedro López",
-        "urgencia": "Baja",
-        "ubicacion": "Pasillo central",
-        "estado": "Cerrada",
-        "fecha": "2023-10-24"
-      }
-    ]
-  }
+  "incidencias": [
+    {
+      "id": 1,
+      "titulo": "Teclado no responde",
+      "usuario": "Soporte Hardware",
+      "urgencia": "Media",
+      "ubicacion": "B204",
+      "estado": "En proceso",
+      "fecha": "2025/01/05"
+    },
+    {
+      "id": 2,
+      "titulo": "Fallo en router principal",
+      "usuario": "Soporte Redes",
+      "urgencia": "Alta",
+      "ubicacion": "B103",
+      "estado": "En espera",
+      "fecha": "2025/01/24"
+    },
+    {
+      "id": 3,
+      "titulo": "Actualización fallida",
+      "usuario": "Soporte Software",
+      "urgencia": "Media",
+      "ubicacion": "B104",
+      "estado": "Reportada",
+      "fecha": "2025/01/30"
+    },
+    {
+      "id": 4,
+      "titulo": "Servidor lento",
+      "usuario": "Admin Sistema",
+      "urgencia": "Alta",
+      "ubicacion": "B201",
+      "estado": "En proceso",
+      "fecha": "2025/02/04"
+    },
+    {
+      "id": 5,
+      "titulo": "PC se reinicia solo",
+      "usuario": "Soporte Hardware",
+      "urgencia": "Alta",
+      "ubicacion": "B202",
+      "estado": "En espera",
+      "fecha": "2025/02/15"
+    },
+    {
+      "id": 6,
+      "titulo": "Problemas de WiFi",
+      "usuario": "Soporte Redes",
+      "urgencia": "Media",
+      "ubicacion": "B203",
+      "estado": "En proceso",
+      "fecha": "2025/02/28"
+    },
+    {
+      "id": 7,
+      "titulo": "Software bloqueado",
+      "usuario": "Soporte Software",
+      "urgencia": "Alta",
+      "ubicacion": "B102",
+      "estado": "Reportada",
+      "fecha": "2025/03/03"
+    },
+    {
+      "id": 8,
+      "titulo": "Corte en switch",
+      "usuario": "Soporte Redes",
+      "urgencia": "Alta",
+      "ubicacion": "PB201",
+      "estado": "En proceso",
+      "fecha": "2025/03/13"
+    },
+    {
+      "id": 9,
+      "titulo": "Permiso denegado en carpeta",
+      "usuario": "Admin IT",
+      "urgencia": "Media",
+      "ubicacion": "B101",
+      "estado": "En espera",
+      "fecha": "2025/03/25"
+    },
+    {
+      "id": 10,
+      "titulo": "Servidor de correo caído",
+      "usuario": "Admin Sistema",
+      "urgencia": "Alta",
+      "ubicacion": "CPD",
+      "estado": "En proceso",
+      "fecha": "2025/04/13"
+    },
+    {
+      "id": 11,
+      "titulo": "Pantalla con líneas",
+      "usuario": "Soporte Hardware",
+      "urgencia": "Baja",
+      "ubicacion": "B202",
+      "estado": "Resuelta",
+      "fecha": "2025/04/27"
+    },
+    {
+      "id": 12,
+      "titulo": "App no inicia",
+      "usuario": "Soporte Software",
+      "urgencia": "Media",
+      "ubicacion": "B102",
+      "estado": "Abierta",
+      "fecha": "2025/05/01"
+    },
+    {
+      "id": 13,
+      "titulo": "DNS no responde",
+      "usuario": "Soporte Redes",
+      "urgencia": "Alta",
+      "ubicacion": "B204",
+      "estado": "Reportada",
+      "fecha": "2025/05/12"
+    },
+    {
+      "id": 14,
+      "titulo": "Reset de contraseña",
+      "usuario": "Admin IT",
+      "urgencia": "Baja",
+      "ubicacion": "B202",
+      "estado": "Resuelta",
+      "fecha": "2025/05/20"
+    },
+    {
+      "id": 15,
+      "titulo": "Servidor web inaccesible",
+      "usuario": "Admin Sistema",
+      "urgencia": "Alta",
+      "ubicacion": "B104",
+      "estado": "En espera",
+      "fecha": "2025/05/28"
+    },
+    {
+      "id": 16,
+      "titulo": "Equipo muy lento",
+      "usuario": "Soporte Hardware",
+      "urgencia": "Media",
+      "ubicacion": "Sala de profesores",
+      "estado": "Reportada",
+      "fecha": "2025/06/01"
+    },
+    {
+      "id": 17,
+      "titulo": "Error en instalación de software",
+      "usuario": "Soporte Software",
+      "urgencia": "Alta",
+      "ubicacion": "Dpto de Informática",
+      "estado": "En proceso",
+      "fecha": "2025/09/05"
+    },
+    {
+      "id": 18,
+      "titulo": "Pérdida de paquetes",
+      "usuario": "Soporte Redes",
+      "urgencia": "Media",
+      "ubicacion": "B203",
+      "estado": "En proceso",
+      "fecha": "2025/09/21"
+    },
+    {
+      "id": 19,
+      "titulo": "Ratón no funciona",
+      "usuario": "Soporte Hardware",
+      "urgencia": "Media",
+      "ubicacion": "B203",
+      "estado": "Cerrada",
+      "fecha": "2025/11/15"
+    },
+    {
+      "id": 20,
+      "titulo": "Acceso restringido a aplicación",
+      "usuario": "Admin IT",
+      "urgencia": "Baja",
+      "ubicacion": "B104",
+      "estado": "En espera",
+      "fecha": "2025/12/10"
+    }
+  ]
+}

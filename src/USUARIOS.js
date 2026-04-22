@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import datosUsuarios from './BD/usuarios.json';
 import Footer from './componentes/Footer';
 import Header from './componentes/Header';
+import { Link } from 'react-router-dom';
 
 export default function Usuarios() {
   const navigate = useNavigate();
@@ -127,6 +128,9 @@ export default function Usuarios() {
               </select>
 
               <div className="d-flex justify-content-center gap-2">
+                <button type="button" className="btn btn-secondary btn-lg rounded-pill px-4 fs-6" onClick={() => navigate('/admin')}>
+                  Inicio
+                </button>
                 <button type="button" className="btn btn-secondary btn-lg rounded-pill px-4 fs-6" onClick={vaciarForm}>
                   Cancelar
                 </button>

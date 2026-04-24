@@ -12,8 +12,7 @@ export const login = async (correo, password) => {
         const response = await fetch(`${apiUrl}usuarios/login`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                Authorization: null
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({ email: correo, contraseña: password })
         });
@@ -21,9 +20,11 @@ export const login = async (correo, password) => {
 
         localStorage.setItem("authToken", data.token);
 
-        //user = data.usuario;
+        user = data.usuario;
 
-        //fetchStatistics();
+        console.log(user);
+
+        await fetchStatics();
 
         return data;
     } catch (error) {
@@ -32,29 +33,77 @@ export const login = async (correo, password) => {
     }
 };
 
-const fetchStatistics = async () => {
+const parseJwt = (token) => {
     try {
-        roles = await fetch('roles');
-        categorias = await fetch('categorias');
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+    } catch (error) {
+        console.error('Error parsing JWT:', error);
+        return null;
+    }
+};
+
+export const getUser = async() => {
+    if (!user) {
+        const token = localStorage.getItem("authToken");
+        if (token) {
+            user = parseJwt(token);
+
+            await fetchStatics();
+        }
+    }
+    return user;
+};
+
+export const logout = () => {
+    localStorage.removeItem("authToken");
+    user = null;
+};
+
+export const isAdmin = () => {
+    if (!user || !roles) return false;
+
+    const rolId = user.rolId;
+
+    console.log(user, roles);
+
+    roles.forEach(element => {
+        if (element.Nombre === "Admin") {
+            console.log(element.Id === rolId, element);
+            return element.Id === rolId;
+        }
+    });
+
+    return false;
+};
+
+const fetchStatics = async () => {
+    try {
+        roles = await get('roles');
+        categorias = await get('categorias');
 
         console.log("Roles:", roles);
         console.log("Categorías:", categorias);
 
     } catch (error) {
-        console.error('Error fetching statistics:', error);
+        console.error('Error geting statistics:', error);
         throw error;
     }
 };
 
-const fetch = async (endpoint = {}) => {
+const get = async (endpoint = {}) => {
     const token = localStorage.getItem("authToken");
 
-    return await window.fetch(`${apiUrl}${endpoint}`, {
+    return (await fetch(`${apiUrl}${endpoint}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
-    });
+    })).json();
 };
 

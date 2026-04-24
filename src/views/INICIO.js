@@ -1,10 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../componentes/Header';
 import Footer from '../componentes/Footer';
+import { logout, isAdmin } from '../BD/service/AuthService';
 
 export default function Incio() {
   const navigate = useNavigate();
+
+  const [loaded, setLoaded] = useState(false);
+
+
+
+
+  useEffect(() => {
+    const admin = isAdmin();
+    setLoaded(admin);
+  }, []);
+
+
+  console.log(isAdmin());
 
   return (
     <div className="vh-100 d-flex flex-column bg-light">
@@ -18,7 +32,15 @@ export default function Incio() {
             Ver incidencias
           </button>
           <button className="btn btn-secondary btn-lg rounded-pill px-4" onClick={() => navigate('/registrar')}>Registrar incidencia</button>
-          <button className="btn btn-dark btn-lg rounded-pill px-4" onClick={() => navigate('/')}>
+
+          {//FIX: Esto no se actualiza al cambiar el rol
+          loaded && (
+            <button className="btn btn-secondary btn-lg rounded-pill px-4" onClick={() => navigate('/usuarios')}>
+              Gestión de usuarios/roles
+            </button>
+          )}
+
+          <button className="btn btn-dark btn-lg rounded-pill px-4" onClick={() => { logout(); navigate('/login') }}>
             Cerrar sesión
           </button>
         </div>

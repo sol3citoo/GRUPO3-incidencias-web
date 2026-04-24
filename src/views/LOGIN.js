@@ -16,7 +16,7 @@ export default function Login() {
       .then(response => {
         if (response.token) {
           localStorage.setItem('authToken', response.token);
-          navigate('/inicio');
+          navigate('/');
         } else {
           alert("Error al iniciar sesión");
         }

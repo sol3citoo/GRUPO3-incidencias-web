@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import datosIncidencias from './BD/incidencias.json';
-import Footer from './componentes/Footer';
-import Header from './componentes/Header';
+import datosIncidencias from '../BD/incidencias.json';
+import Footer from '../componentes/Footer';
+import Header from '../componentes/Header';
 
 export default function Registrar() {
   const navigate = useNavigate();

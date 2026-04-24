@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LOGIN from './LOGIN';
-import INICIO from './INICIO';
-import ADMIN from './ADMIN';
-import INCIDENCIAS from './INCIDENCIAS';
-import REGISTRAR from './REGISTRAR';
-import USUARIOS from './USUARIOS'
+import LOGIN from './views/LOGIN';
+import INICIO from './views/INICIO';
+import ADMIN from './views/ADMIN';
+import INCIDENCIAS from './views/INCIDENCIAS';
+import REGISTRAR from './views/REGISTRAR';
+import USUARIOS from './views/USUARIOS';
 
 function App() {
   return (

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import data from './BD/usuarios.json';
-import Header from './componentes/Header';
-import Footer from './componentes/Footer';
+import data from '../BD/usuarios.json';
+import Header from '../componentes/Header';
+import Footer from '../componentes/Footer';
+import { login } from '../BD/service/AuthService';
 
 export default function Login() {
   const [form, setForm] = useState({ correo: '', password: '' });
@@ -10,21 +11,20 @@ export default function Login() {
 
   const entrar = (e) => {
     e.preventDefault();
-    const user = data.usuarios.find(u => u.correo === form.correo && u.password === form.password);
-    
-    if (user) {
-      //GUARDAR INFORMACIÓN PARA PODER VOLVER A LA PAGINA DE INICIO UNA VEZ ACCEDIDO
-      localStorage.setItem('usuarioNombre', user.correo.split('@')[0]);
-      localStorage.setItem('usuarioRol', user.rol);
-      
-      if (user.rol === "admin") {
-        navigate('/admin');
-      } else {
-        navigate('/inicio');
-      }
-    } else {
-      alert("Credenciales incorrectas");
-    }
+
+    login(form.correo, form.password)
+      .then(response => {
+        if (response.token) {
+          localStorage.setItem('authToken', response.token);
+          navigate('/inicio');
+        } else {
+          alert("Error al iniciar sesión");
+        }
+      })
+      .catch(error => {
+        console.error('Error al iniciar sesión:', error);
+        alert("Error al iniciar sesión");
+      });
   };
 
   const cambio = (e) => setForm({ ...form, [e.target.name]: e.target.value });

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import datos from './BD/incidencias.json';
-import Footer from './componentes/Footer';
-import Header from './componentes/Header';
+import datos from '../BD/incidencias.json';
+import Footer from '../componentes/Footer';
+import Header from '../componentes/Header';
 
 export default function Incidencias() {
   const navigate = useNavigate();

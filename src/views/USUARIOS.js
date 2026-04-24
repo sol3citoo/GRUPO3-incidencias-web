@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import datosUsuarios from './BD/usuarios.json';
-import Footer from './componentes/Footer';
-import Header from './componentes/Header';
+import datosUsuarios from '../BD/usuarios.json';
+import Footer from '../componentes/Footer';
+import Header from '../componentes/Header';
 import { Link } from 'react-router-dom';
 
 export default function Usuarios() {

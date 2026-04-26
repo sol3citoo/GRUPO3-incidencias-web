@@ -1,11 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import datosIncidencias from '../BD/incidencias.json';
 import Footer from '../componentes/Footer';
 import Header from '../componentes/Header';
+import { getCategorias, getUbicaciones, getUrgencias, postIncidencia } from '../BD/service/IncidenciaService';
 
 export default function Registrar() {
   const navigate = useNavigate();
+
+  const [categorias, setCategorias] = useState([]);
+  const [ubicaciones, setUbicaciones] = useState([]);
+  const [urgencias, setUrgencias] = useState([]);
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      const categoriasData = await getCategorias();
+      const ubicacionesData = await getUbicaciones();
+      const urgenciasData = await getUrgencias();
+      setCategorias(categoriasData);
+      setUbicaciones(ubicacionesData);
+      setUrgencias(urgenciasData);
+    };
+
+    fetchOptions();
+  }, []);
+
 
   const [form, setForm] = useState({
     titulo: '',
@@ -21,20 +40,16 @@ export default function Registrar() {
 
   const manejarEnvio = (e) => {
     e.preventDefault();
-    const nombreGuardado = localStorage.getItem('usuarioNombre') || "Usuario";
 
     const nuevaIncidencia = {
-      id: String(datosIncidencias.incidencias.length + 1).padStart(2, '0'),
       titulo: form.titulo,
-      usuario: nombreGuardado,
+      descripcion: form.descripcion,
+      categoriaId: form.categoria,
       urgencia: form.urgencia,
-      ubicacion: form.ubicacion,
-      estado: "Abierta",
-      fecha: new Date().toLocaleDateString()
+      ubicacionId: form.ubicacion
     };
 
-    datosIncidencias.incidencias.push(nuevaIncidencia);
-    alert("Incidencia agregada correctamente");
+    postIncidencia(nuevaIncidencia);
     navigate('/incidencias');
   };
 
@@ -63,30 +78,45 @@ export default function Registrar() {
             onChange={manejarCambio}
             required
           ></textarea>
-
-          <input
+          
+          <select
             name="categoria"
-            className="form-control form-control-lg border-dark mb-3 shadow-sm"
-            placeholder="Categoría"
+            className="form-control form-control-lg border-dark mb-3 shadow-sm"//"form-select mb-4 border-dark shadow-sm"
             onChange={manejarCambio}
+            value={form.categoria}
             required
-          />
-
-          <input
+          >
+            <option value="" disabled>Selecciona una categoría...</option>
+            {categorias.map((categoria, index) => (
+              <option key={index} value={categoria.Id}>{categoria.Nombre}</option>
+            ))}
+          </select>
+          
+          <select
             name="urgencia"
-            className="form-control form-control-lg border-dark mb-3 shadow-sm"
-            placeholder="Nivel Urgencia"
+            className="form-control form-control-lg border-dark mb-3 shadow-sm"//"form-select mb-4 border-dark shadow-sm"
             onChange={manejarCambio}
+            value={form.urgencia}
             required
-          />
-
-          <input
+          >
+            <option value="" disabled>Selecciona una urgencia...</option>
+            {urgencias.map((urgencia, index) => (
+              <option key={index} value={urgencia.Urgencia}>{urgencia.Urgencia}</option>
+            ))}
+          </select>
+          
+          <select
             name="ubicacion"
-            className="form-control form-control-lg border-dark mb-5 shadow-sm"
-            placeholder="Ubicación"
+            className="form-control form-control-lg border-dark mb-3 shadow-sm"//"form-select mb-4 border-dark shadow-sm"
             onChange={manejarCambio}
+            value={form.ubicacion}
             required
-          />
+          >
+            <option value="" disabled>Selecciona una ubicación...</option>
+            {ubicaciones.map((ubicacion, index) => (
+              <option key={index} value={ubicacion.Id}>{ubicacion.Nombre}</option>
+            ))}
+          </select>
 
           <div className="d-flex justify-content-center gap-3">
             <button

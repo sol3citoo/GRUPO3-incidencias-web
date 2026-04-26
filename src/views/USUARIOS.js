@@ -1,26 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import datosUsuarios from '../BD/usuarios.json';
 import Footer from '../componentes/Footer';
 import Header from '../componentes/Header';
 import { Link } from 'react-router-dom';
-
+import { getUsers, register, roles, eliminarUsuario } from '../BD/service/AuthService';
+  
 export default function Usuarios() {
   const navigate = useNavigate();
 
-  const [lista, setLista] = useState(datosUsuarios.usuarios);
+  const [users, setUsers] = useState([]);
+  const [rolesOpciones, setRolesOpciones] = useState([]);
+
+  useEffect(() => {
+    const cargarUsuarios = async () => {
+      const fetchedUsers = await getUsers();
+      const fetchedRoles = await roles;
+
+      setUsers(fetchedUsers);
+      setRolesOpciones(fetchedRoles);
+    };
+
+    cargarUsuarios();
+  }, []);
 
   const [form, setForm] = useState({
     nombre: '',
-    apellidos: '',
     email: '',
     password: '',
+    confirmPassword: '',
     rol: ''
   });
 
   const vaciarForm = () => {
     console.log("Formulario vaciado");
-    setForm({ nombre: '', apellidos: '', email: '', password: '', rol: '' });
+    setForm({ nombre: '', email: '', password: '', confirmPassword: '', rol: '' });
   };
 
   const manejarCambio = (e) => {
@@ -30,33 +44,33 @@ export default function Usuarios() {
   const agregarUsuario = (e) => {
     e.preventDefault();
 
+    if (form.password !== form.confirmPassword) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+
     const nuevoUsuario = {
-      correo: form.email,
-      password: form.password,
-      rol: form.rol
+      nombre: form.nombre,
+      email: form.email,
+      contraseña: form.password,
+      rolId: form.rol
     };
 
-    datosUsuarios.usuarios.push(nuevoUsuario);
-    setLista([...datosUsuarios.usuarios]);
+    console.log("Nuevo usuario a registrar:", nuevoUsuario);
 
-    alert(`Usuario ${form.nombre} registrado con éxito`);
-    setForm({ nombre: '', apellidos: '', email: '', password: '', rol: '' });
-    e.target.reset();
+    register(nuevoUsuario);
   };
 
   const cambiarRol = (index) => {
-    const nuevaLista = [...lista];
-    nuevaLista[index].rol = nuevaLista[index].rol === 'admin' ? 'comun' : 'admin';
-    setLista(nuevaLista);
+    const nuevaLista = [...users];
+    nuevaLista[index].RolId = nuevaLista[index].RolId === 1 ? 2 : 1;
+    setUsers(nuevaLista);
   };
 
-  const eliminarUsuario = (index) => {
+  const borrarUsuario = (index) => {
     const confirmar = window.confirm("¿Estás seguro de que deseas eliminar este usuario?");
     if (confirmar) {
-      const nuevaLista = [...lista];
-      nuevaLista.splice(index, 1);
-      setLista(nuevaLista);
-      datosUsuarios.usuarios = nuevaLista;
+      eliminarUsuario(index);
     }
   };
 
@@ -73,28 +87,30 @@ export default function Usuarios() {
               <table className="table table-sm table-hover border">
                 <thead className="table-light text-center">
                   <tr>
-                    <th className="text-start">Usuario</th>
+                    <th className="text-start">Nombre</th>
+                    <th className="text-start">Email</th>
                     <th>Rol</th>
                     <th>Cambio rol</th>
                     <th>Acción</th>
                   </tr>
                 </thead>
                 <tbody className="text-center">
-                  {lista.map((u, index) => (
+                  {users.map((u, index) => (
                     <tr key={index}>
-                      <td className="py-2 text-start small">{u.correo}</td>
+                      <td className="py-2 text-start small">{u.Nombre}</td>
+                      <td className="py-2 text-start small">{u.Email}</td>
                       <td>
-                        <span className={`badge ${u.rol === 'admin' ? 'bg-dark' : 'bg-secondary'}`}>
-                          {u.rol}
+                        <span className={`badge ${u.Rol === 'Admin' ? 'bg-dark' : 'bg-secondary'}`}>
+                          {u.Rol}
                         </span>
                       </td>
                       <td>
-                        <button className="btn btn-outline-dark btn-sm" onClick={() => cambiarRol(index)}>
+                        <button className="btn btn-outline-dark btn-sm" onClick={() => cambiarRol(u.Id)}>
                           Cambiar
                         </button>
                       </td>
                       <td>
-                        <button className="btn btn-danger btn-sm" onClick={() => eliminarUsuario(index)}>
+                        <button className="btn btn-danger btn-sm" onClick={() => borrarUsuario(u.Id)}>
                           Eliminar
                         </button>
                       </td>
@@ -111,9 +127,9 @@ export default function Usuarios() {
 
             <form onSubmit={agregarUsuario} className="text-start">
               <input name="nombre" className="form-control mb-3 border-dark" placeholder="Nombre" value={form.nombre} onChange={manejarCambio} required />
-              <input name="apellidos" className="form-control mb-3 border-dark" placeholder="Apellidos" value={form.apellidos} onChange={manejarCambio} required />
               <input name="email" type="email" className="form-control mb-3 border-dark" placeholder="Email" value={form.email} onChange={manejarCambio} required />
               <input name="password" type="password" className="form-control mb-3 border-dark" placeholder="Contraseña" value={form.password} onChange={manejarCambio} required />
+              <input name="confirmPassword" type="password" className="form-control mb-3 border-dark" placeholder="Confirmar contraseña" value={form.confirmPassword} onChange={manejarCambio} required />
 
               <select
                 name="rol"
@@ -123,8 +139,9 @@ export default function Usuarios() {
                 required
               >
                 <option value="" disabled>Selecciona un rol...</option>
-                <option value="admin">Admin</option>
-                <option value="comun">Común</option>
+                {rolesOpciones.map((rol, index) => (
+                  <option key={index} value={rol.Id}>{rol.Nombre}</option>
+                ))}
               </select>
 
               <div className="d-flex justify-content-center gap-2">

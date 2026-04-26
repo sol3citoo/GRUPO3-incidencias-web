@@ -7,18 +7,21 @@ import { logout, isAdmin } from '../BD/service/AuthService';
 export default function Incio() {
   const navigate = useNavigate();
 
-  const [loaded, setLoaded] = useState(false);
+  const [admin, setAdmin] = useState(false);
 
 
 
 
   useEffect(() => {
-    const admin = isAdmin();
-    setLoaded(admin);
+    const checkAdminStatus = async () => {
+      const adminStatus = await isAdmin();
+
+      console.log("Admin status:", adminStatus);
+
+      setAdmin(adminStatus);
+    };
+    checkAdminStatus();
   }, []);
-
-
-  console.log(isAdmin());
 
   return (
     <div className="vh-100 d-flex flex-column bg-light">
@@ -34,7 +37,7 @@ export default function Incio() {
           <button className="btn btn-secondary btn-lg rounded-pill px-4" onClick={() => navigate('/registrar')}>Registrar incidencia</button>
 
           {//FIX: Esto no se actualiza al cambiar el rol
-          loaded && (
+          admin && (
             <button className="btn btn-secondary btn-lg rounded-pill px-4" onClick={() => navigate('/usuarios')}>
               Gestión de usuarios/roles
             </button>

@@ -1,29 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import datos from '../BD/incidencias.json';
 import Footer from '../componentes/Footer';
 import Header from '../componentes/Header';
+import { getIncidencias } from '../BD/service/IncidenciaService';
 
 export default function Incidencias() {
   const navigate = useNavigate();
 
-  const volverAlInicio = () => {
-    const rol = localStorage.getItem('usuarioRol');
-    if (rol === "admin") {
-      navigate('/admin');
-    } else {
-      navigate('/inicio');
-    }
-  };
+  const [incidencias, setIncidencias] = useState([]);
 
-  const lista = datos && datos.incidencias ? datos.incidencias : [];
+  useEffect(() => {
+    const fetchIncidencias = async () => {
+      setIncidencias(await getIncidencias());
+    };
+
+    fetchIncidencias();
+  }, []);
+
 
   return (
     <div className="vh-100 d-flex flex-column bg-white">
       <Header />
       <main className="flex-grow-1 container mt-4">
         <div className="d-flex justify-content-center gap-3 mb-5">
-          <button className="btn btn-secondary btn-lg rounded-pill px-4 shadow-sm" onClick={volverAlInicio}>
+          <button className="btn btn-secondary btn-lg rounded-pill px-4 shadow-sm" onClick={() => navigate('/')}>
             Inicio
           </button>
           <button className="btn btn-secondary btn-lg rounded-pill px-4 shadow-sm" onClick={() => navigate('/registrar')}>
@@ -42,15 +43,15 @@ export default function Incidencias() {
               </tr>
             </thead>
             <tbody className="text-center">
-              {lista.map((item) => (
-                <tr key={item.id}>
-                  <td className="fw-bold">{item.id}</td>
-                  <td className="text-start">{item.titulo}</td>
-                  <td>{item.usuario}</td>
-                  <td>{item.urgencia}</td>
-                  <td>{item.ubicacion}</td>
-                  <td>{item.estado}</td>
-                  <td>{item.fecha}</td>
+              {incidencias.map((item) => (
+                <tr key={item.Id}>
+                  <td className="fw-bold">{item.Id}</td>
+                  <td className="text-start">{item.Titulo}</td>
+                  <td>{item.Creador}</td>
+                  <td>{item.Urgencia}</td>
+                  <td>{item.Ubicacion}</td>
+                  <td>{item.Estado}</td>
+                  <td>{new Date(item.Fecha).toLocaleDateString()}</td>
                 </tr>
               ))}
             </tbody>

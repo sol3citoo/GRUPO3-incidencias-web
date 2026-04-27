@@ -53,9 +53,16 @@ export const getUser = async () => {
         const token = localStorage.getItem("authToken");
 
         if (token && token !== "undefined") {
+            try {
             user = parseJwt(token);
 
+            console.log("Parsed user from token:", user);
+
             await fetchStatics();
+            } catch (error) {
+                console.error('Error getting user from token:', error);
+                logout();
+            }
         }
     }
 

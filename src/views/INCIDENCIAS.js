@@ -3,20 +3,38 @@ import { useNavigate } from 'react-router-dom';
 import datos from '../BD/incidencias.json';
 import Footer from '../componentes/Footer';
 import Header from '../componentes/Header';
-import { getIncidencias } from '../BD/service/IncidenciaService';
+import { getIncidencias, getEstados, cambiarEstado } from '../BD/service/IncidenciaService';
+import { isAdmin } from '../BD/service/AuthService';
 
 export default function Incidencias() {
   const navigate = useNavigate();
 
+  const [estados, setEstados] = useState([]);
   const [incidencias, setIncidencias] = useState([]);
+  const [admin, setAdmin] = useState(false);
+
+  const [filter, setFilter] = useState({
+    estados: [],
+    urgencias: [],
+    ubicaciones: [],
+    fecha: null
+  });
 
   useEffect(() => {
     const fetchIncidencias = async () => {
       setIncidencias(await getIncidencias());
+      setEstados(await getEstados());
+      setAdmin(await isAdmin());
     };
 
     fetchIncidencias();
   }, []);
+
+  const manejarCambio = async (incidencia, estado) => {
+    await cambiarEstado(incidencia, estado);
+
+    setIncidencias(await getIncidencias(true));
+  };
 
 
   return (
@@ -39,7 +57,20 @@ export default function Incidencias() {
           <table className="table table-bordered align-middle">
             <thead className="table-primary text-center">
               <tr>
-                <th>Id</th><th>Título</th><th>Usuario</th><th>Urgencia</th><th>Ubicación</th><th>Estado</th><th>Fecha registro</th>
+                <th>Id</th>
+                <th>Título</th>
+                <th>Usuario</th>
+                <div>
+                  <th>Urgencia</th>
+
+                  <select 
+                  value={filter.urgencias}>
+
+                  </select>
+                </div>
+                <th>Ubicación</th>
+                <th>Estado</th>
+                <th>Fecha registro</th>
               </tr>
             </thead>
             <tbody className="text-center">
@@ -50,7 +81,17 @@ export default function Incidencias() {
                   <td>{item.Creador}</td>
                   <td>{item.Urgencia}</td>
                   <td>{item.Ubicacion}</td>
-                  <td>{item.Estado}</td>
+                  {item.Estado === "Resuelta" && !admin ? <td className="form-control form-control-lg">{item.Estado}</td> :
+                    <select
+                      className="form-control form-control-lg"
+                      onChange={(e) => manejarCambio(item, e.target.value)}
+                      value={item.Estado}
+                      required
+                    >
+                      {estados.filter((estado) => estado.Estado !== "Resuelta" || admin).map((estado, index) => (
+                        <option key={index} value={estado.Estado}>{estado.Estado}</option>
+                      ))}
+                    </select>}
                   <td>{new Date(item.Fecha).toLocaleDateString()}</td>
                 </tr>
               ))}

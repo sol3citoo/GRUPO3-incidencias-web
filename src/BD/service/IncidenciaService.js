@@ -4,6 +4,7 @@ let incidencias = null;
 let categorias = null;
 let ubicaciones = null;
 let urgencias = null;
+let estados = null;
 
 const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001/';
 
@@ -26,8 +27,25 @@ export async function postIncidencia(incidencia) {
     }
 }
 
-export async function getIncidencias() {
-    if (!incidencias) {
+export function cambiarEstado(incidencia, estado) {
+    try {
+        const response = fetch(`${apiUrl}incidencias/${incidencia.Id}/cambiarEstado`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${localStorage.getItem("authToken")}`
+            },
+            body: JSON.stringify({ estado: estado })
+        });
+        return response;
+    } catch (error) {
+        console.error('Error changing estado:', error);
+        throw error;
+    }
+}
+
+export async function getIncidencias(refetch = false) {
+    if (!incidencias || refetch) {
         const token = localStorage.getItem("authToken");
         incidencias = get('incidencias');
     }
@@ -65,3 +83,12 @@ export function getUrgencias() {
     return urgencias;
 }
 
+export function getEstados() {
+    if (!estados) {
+        const token = localStorage.getItem("authToken");
+
+        estados = get('estados');
+    }
+
+    return estados;
+}

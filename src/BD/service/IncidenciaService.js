@@ -51,6 +51,20 @@ export async function getIncidencias(refetch = false) {
     }
     return incidencias;
 }
+
+
+export async function getIncidenciasWithfilter(body) {
+    const token = localStorage.getItem("authToken");
+
+    return (await fetch(`${apiUrl}incidencias/filter`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(body)
+    })).json();
+}
             
 
 export function getCategorias() {

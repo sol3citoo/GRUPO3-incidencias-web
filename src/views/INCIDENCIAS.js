@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import datos from '../BD/incidencias.json';
 import Footer from '../componentes/Footer';
 import Header from '../componentes/Header';
-import { getIncidencias, getEstados, cambiarEstado } from '../BD/service/IncidenciaService';
+import { getIncidencias, getEstados, cambiarEstado, getUrgencias, getUbicaciones, getIncidenciasWithfilter } from '../BD/service/IncidenciaService';
 import { isAdmin } from '../BD/service/AuthService';
 
 export default function Incidencias() {
@@ -12,6 +12,8 @@ export default function Incidencias() {
   const [estados, setEstados] = useState([]);
   const [incidencias, setIncidencias] = useState([]);
   const [admin, setAdmin] = useState(false);
+  const [urgencias, setUrgencias] = useState([]);
+  const [ubicaciones, setUbicaciones] = useState([]);
 
   const [filter, setFilter] = useState({
     estados: [],
@@ -21,10 +23,22 @@ export default function Incidencias() {
   });
 
   useEffect(() => {
+    async function fetchdata() {
+      console.log(filter)
+
+      setIncidencias(await getIncidenciasWithfilter(filter));
+    }
+
+    fetchdata();
+  }, [filter])
+
+  useEffect(() => {
     const fetchIncidencias = async () => {
       setIncidencias(await getIncidencias());
       setEstados(await getEstados());
       setAdmin(await isAdmin());
+      setUrgencias(await getUrgencias());
+      setUbicaciones(await getUbicaciones());
     };
 
     fetchIncidencias();
@@ -35,6 +49,12 @@ export default function Incidencias() {
 
     setIncidencias(await getIncidencias(true));
   };
+
+  /*const cambioFilter = async (filter) => {
+    console.log(filter)
+
+    setIncidencias(await getIncidenciasWithfilter(filter));
+  }*/
 
 
   return (
@@ -60,19 +80,94 @@ export default function Incidencias() {
                 <th>Id</th>
                 <th>Título</th>
                 <th>Usuario</th>
-                <div>
-                  <th>Urgencia</th>
-
-                  <select 
-                  value={filter.urgencias}>
-
-                  </select>
-                </div>
+                <th>Urgencia</th>
                 <th>Ubicación</th>
                 <th>Estado</th>
                 <th>Fecha registro</th>
               </tr>
+
+              {/* FILA DE FILTROS */}
+              <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+
+                {/* Filtro urgencia */}
+                <th>
+                  <select
+                    className="form-select"
+                    multiple
+                    value={filter.urgencias}
+                    onChange={(e) => {
+                      setFilter({
+                        ...filter,
+                        urgencias: Array.from(e.target.selectedOptions, opt => opt.value)
+                      })
+                    }}
+                  >
+                    {urgencias.map((u, i) => (
+                      <option key={i} value={u.Urgencia}>{u.Urgencia}</option>
+                    ))}
+                  </select>
+                </th>
+
+                {/* Filtro ubicación */}
+                <th>
+                  <select
+                    className="form-select"
+                    multiple
+                    value={filter.ubicaciones}
+                    onChange={(e) => {
+                      setFilter({
+                        ...filter,
+                        ubicaciones: Array.from(e.target.selectedOptions, opt => opt.value)
+                      })
+
+                      console.log(filter)
+                    }}
+                  >
+                    {ubicaciones.map((ubicacion, i) => (
+                      <option key={i} value={ubicacion.Nombre}>{ubicacion.Nombre}</option>
+                    ))}
+                  </select>
+                </th>
+
+                {/* Filtro estado */}
+                <th>
+                  <select
+                    className="form-select"
+                    multiple
+                    value={filter.estados}
+                    onChange={(e) => {
+                      setFilter({
+                        ...filter,
+                        estados: Array.from(e.target.selectedOptions, opt => opt.value)
+                      })
+                    }}
+                  >
+                    {estados.map((estado, i) => (
+                      <option key={i} value={estado.Estado}>{estado.Estado}</option>
+                    ))}
+                  </select>
+                </th>
+
+                {/* Filtro fecha */}
+                <th>
+                  <input
+                    type="date"
+                    className="form-control"
+                    value={filter.fecha ?? ""}
+                    onChange={(e) => {
+                      setFilter({
+                        ...filter,
+                        fecha: e.target.value
+                      })
+                    }}
+                  />
+                </th>
+              </tr>
             </thead>
+
             <tbody className="text-center">
               {incidencias.map((item) => (
                 <tr key={item.Id}>

@@ -19,7 +19,8 @@ export default function Incidencias() {
     estados: [],
     urgencias: [],
     ubicaciones: [],
-    fecha: null
+    fecha: null,
+    abierto: 1
   });
 
   useEffect(() => {
@@ -44,7 +45,7 @@ export default function Incidencias() {
     fetchIncidencias();
   }, []);
 
-  const manejarCambio = async (incidencia, estado) => {
+  const manejarCambioEstado = async (incidencia, estado) => {
     await cambiarEstado(incidencia, estado);
 
     setIncidencias(await getIncidencias(true));
@@ -84,6 +85,7 @@ export default function Incidencias() {
                 <th>Ubicación</th>
                 <th>Estado</th>
                 <th>Fecha registro</th>
+                <th></th>
               </tr>
 
               {/* FILA DE FILTROS */}
@@ -165,6 +167,22 @@ export default function Incidencias() {
                     }}
                   />
                 </th>
+                <th>
+                  <select
+                    className="form-select"
+                    multiple
+                    value={filter.abierto}
+                    onChange={(e) => {
+                      setFilter({
+                        ...filter,
+                        abierto: Array.from(e.target.selectedOptions, opt => opt.value)
+                      })
+                    }}>
+
+                    <option value={1}>Abierta</option>
+                    <option value={0}>Cerrada</option>
+                  </select>
+                </th>
               </tr>
             </thead>
 
@@ -179,7 +197,7 @@ export default function Incidencias() {
                   {item.Estado === "Resuelta" && !admin ? <td className="form-control form-control-lg">{item.Estado}</td> :
                     <select
                       className="form-control form-control-lg"
-                      onChange={(e) => manejarCambio(item, e.target.value)}
+                      onChange={(e) => manejarCambioEstado(item, e.target.value)}
                       value={item.Estado}
                       required
                     >
@@ -188,6 +206,17 @@ export default function Incidencias() {
                       ))}
                     </select>}
                   <td>{new Date(item.Fecha).toLocaleDateString()}</td>
+
+                  {!admin ? <td className="text-success">{item.Abierto === 1 ? 'Sí' : 'No'}</td> :
+                   <select
+                      className="form-control form-control-lg"
+                      onChange={(e) => manejarCambioEstado(item, e.target.value)}
+                      value={item.Abierto}
+                      required>
+
+                      <option value={1}>Abierta</option>
+                      <option value={0}>Cerrada</option>
+                    </select>}
                 </tr>
               ))}
             </tbody>

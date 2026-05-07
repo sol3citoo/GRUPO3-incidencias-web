@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import datos from '../BD/incidencias.json';
 import Footer from '../componentes/Footer';
 import Header from '../componentes/Header';
-import { getIncidencias, getEstados, cambiarEstado, getUrgencias, getUbicaciones, getIncidenciasWithfilter } from '../BD/service/IncidenciaService';
+import { getIncidencias, getEstados, cambiarEstado, getUrgencias, getUbicaciones, getIncidenciasWithfilter, cambiarAbierto } from '../BD/service/IncidenciaService';
 import { isAdmin } from '../BD/service/AuthService';
 
 export default function Incidencias() {
@@ -20,7 +20,7 @@ export default function Incidencias() {
     urgencias: [],
     ubicaciones: [],
     fecha: null,
-    abierto: 1
+    abierto: null
   });
 
   useEffect(() => {
@@ -50,6 +50,12 @@ export default function Incidencias() {
 
     setIncidencias(await getIncidencias(true));
   };
+
+  const manejarCambioAbierto = async (incidencia, abierto) => {
+    await cambiarAbierto(incidencia, abierto);
+
+    setIncidencias(await getIncidencias(true));
+  }
 
   /*const cambioFilter = async (filter) => {
     console.log(filter)
@@ -175,7 +181,7 @@ export default function Incidencias() {
                     onChange={(e) => {
                       setFilter({
                         ...filter,
-                        abierto: Array.from(e.target.selectedOptions, opt => opt.value)
+                        abierto: e.target.value
                       })
                     }}>
 
@@ -210,7 +216,7 @@ export default function Incidencias() {
                   {!admin ? <td className="text-success">{item.Abierto === 1 ? 'Sí' : 'No'}</td> :
                    <select
                       className="form-control form-control-lg"
-                      onChange={(e) => manejarCambioEstado(item, e.target.value)}
+                      onChange={(e) => manejarCambioAbierto(item, e.target.value)}
                       value={item.Abierto}
                       required>
 

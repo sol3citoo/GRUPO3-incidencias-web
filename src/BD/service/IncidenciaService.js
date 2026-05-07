@@ -44,6 +44,23 @@ export function cambiarEstado(incidencia, estado) {
     }
 }
 
+export function cambiarAbierto(incidencia, abierto) {
+    try {
+        const response = fetch(`${apiUrl}incidencias/${incidencia.Id}/cambiarAbierto`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${localStorage.getItem("authToken")}`
+            },
+            body: JSON.stringify({ abierto: abierto })
+        });
+        return response;
+    } catch (error) {
+        console.error('Error changing abierto:', error);
+        throw error;
+    }
+}
+
 export async function getIncidencias(refetch = false) {
     if (!incidencias || refetch) {
         const token = localStorage.getItem("authToken");

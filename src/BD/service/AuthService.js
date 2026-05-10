@@ -23,8 +23,6 @@ export const login = async (correo, password) => {
 
         user = data.usuario;
 
-        console.log(user);
-
         await fetchStatics();
 
         return data;
@@ -61,7 +59,7 @@ export const getUser = async () => {
             await fetchStatics();
             } catch (error) {
                 console.error('Error getting user from token:', error);
-                logout();
+                return null;
             }
         }
     }
@@ -122,13 +120,15 @@ export const isAdmin = async () => {
 
         const rolId = currentUser.rolId;
 
+        roles = roles || await get('roles');
+
         const isUserAdmin = roles.some(element => 
             element.Nombre === "Admin" && element.Id === rolId
         );
-        //console.log("IsAdmin result:", isUserAdmin, { rolId, roles });
 
         return isUserAdmin;
     } catch (error) {
+        console.error('Error checking admin status:', error);
         return false;
     }
 };

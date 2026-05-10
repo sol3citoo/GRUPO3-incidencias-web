@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import datosIncidencias from '../BD/incidencias.json';
 import Footer from '../componentes/Footer';
 import Header from '../componentes/Header';
-import { getCategorias, getUbicaciones, getUrgencias, postIncidencia } from '../BD/service/IncidenciaService';
+import { getCategorias, getUbicaciones, getUrgencias, postIncidencia, getIncidencias } from '../BD/service/IncidenciaService';
 
 export default function Registrar() {
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ export default function Registrar() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const manejarEnvio = (e) => {
+  const manejarEnvio = async(e) => {
     e.preventDefault();
 
     const nuevaIncidencia = {
@@ -50,6 +50,9 @@ export default function Registrar() {
     };
 
     postIncidencia(nuevaIncidencia);
+
+    await getIncidencias(true);
+
     navigate('/incidencias');
   };
 

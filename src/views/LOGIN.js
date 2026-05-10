@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import data from '../BD/usuarios.json';
 import Header from '../componentes/Header';
 import Footer from '../componentes/Footer';
-import { login } from '../BD/service/AuthService';
+import { login, getUser } from '../BD/service/AuthService';
 
-export default function Login() {
+export default function Login({ setUser }) {
   const [form, setForm] = useState({ correo: '', password: '' });
   const navigate = useNavigate();
 
@@ -16,7 +16,11 @@ export default function Login() {
       .then(response => {
         if (response.token) {
           localStorage.setItem('authToken', response.token);
-          navigate('/');
+
+          getUser().then(user => {
+            setUser(user);
+            navigate('/');
+          });
         } else {
           alert("Error al iniciar sesión");
         }
